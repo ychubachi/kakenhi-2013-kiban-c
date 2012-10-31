@@ -1,0 +1,13 @@
+%============================================================
+% preamble.tex
+%
+% Dummy section and subsection commands.
+% With these, some editors (such as TeXShop, etc.) can jump to the (sub)sections.
+\newcommand{\dummy}{dummy}% 
+\renewcommand{\section}[1]{\renewcommand{\dummy}{#1}}
+\renewcommand{\subsection}[1]{\renewcommand{\dummy}{#1}}
+
+% Flag for switching form file format.......
+\usepackage{ifthen}
+\newboolean{usePDFform}
+\newboolean{BudgetSummary}

@@ -1,0 +1,32 @@
+%============================================================
+%  Warning cover page
+%============================================================
+
+\begin{picture}(0,0)(\KLOddPictureX,\KLPictureY)
+	\KLParbox{100}{700}{550}{600}{t}{
+		\LARGE
+		提出前に次の行を以下のようにコメントアウトし、\\
+		コンパイルし直してください。\\
+		\hspace{2cm}\%\textbackslash setboolean\{BudgetSummary\}\{true\}\\
+		\hspace{2cm}\%\textbackslash KLTypesetPage\{..\}\\
+		\hspace{2cm}\%\textbackslash KLTypesetPagesInRange\{..\}\{..\}\\
+	}
+	\西暦
+	\KLParbox{100}{550}{500}{500}{t}{
+		\begin{center}
+			\LARGE 予算と研究組織のまとめ \\
+			\Large \today
+		\end{center}
+	}
+
+	\KLTextBox{100}{500}{550}{300}{}{
+		\Large
+		研究種目：　\研究種目\研究種別\研究種目後半\\
+		研究期間：　\研究開始年度(H\研究開始元号年度) 〜 H\研究期間の最終元号年度\\
+		研究課題名：「\研究課題名」\\
+		研究代表者：\研究代表者氏名\\
+		研究機関名：\研究機関名\\
+	}
+\end{picture}
+\clearpage
+

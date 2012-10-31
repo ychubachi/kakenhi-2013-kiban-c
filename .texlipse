@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Wed Oct 31 15:37:32 JST 2012
+markTmpDer=true
+builderNum=4
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=kiban_c.tex
+outputFile=kiban_c.pdf
+langSpell=en
+markDer=true
+srcDir=

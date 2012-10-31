@@ -1,0 +1,1364 @@
+%==================================================
+% kakenhi5.sty
+%==================================================
+% v1
+% Minimum amount of macros for writing Kakenhi forms.
+%
+% 2005-10-24 Taku Yamanaka, Physics Dept. Osaka Univ.
+%		taku@hep.sci.osaka-u.ac.jp
+% 		Macros such as XYBC, etc. were imported from Kakenhi Macro at
+% 		http://www.yukawa.kyoto-u.ac.jp/contents/researcher/kakenhi.html .
+% 2006-06-04 Taku
+%		Added macros to draw boxes if \DrawBox is in the source.
+%		This is useful when designing the LaTeX forms.
+% 2006-06-14 Taku
+%		Added LaTeX macros to add costs 
+%		(\KLResetGrandSum, \KLCostItem, \KLSum, \KLGrandSum).
+%		Added a macro \Number to supply commas every 3 digits (imported from kkh.mac).
+% 2006-06-25 Taku
+%		Added \KLTabC, \KLTabR, \KLTabRNum to specify alignments in tables.
+%		Please note that \phantom{...} is required for the column, 
+%		or otherwise somehow p{...mm} is ignored.
+% 2006-08-13 Taku
+%		Added \KLItemNumUnitCost . This requires calc.sty.
+% 2006-09-06 Taku
+%		Added KLGrandTotalValue to add ALL the costs.
+%		Also added \KLPrintGrandTotal to print the total on the console.
+% 2006-09-09 Taku
+%		Added macros to handle "efforts".
+% 2006-09-10 Taku
+%		Added \KLnewcounter to make series of counters.
+%		Modified \KLResetGrandSum and \KLSum to add the sum for 
+%		each category and year.
+% 2006-09-11 Taku
+%		Added \NumC to display LaTeX counter with commas.
+% 2006-09-12 Taku
+%		Added simple macros to make group table.
+% 2006-09-23 Taku
+%		Added the 'Fair License' notification.
+% 2006-10-22 Taku
+%		Initialize KLNumPeople to -1, so that the first header row will not be included in the count.
+%====================================================
+% v2
+% 2007-03-24 Taku
+%		Instead of using Kakenhi Macros to position items, 
+%		switched to a new method using
+%		"picture" environment.  The origin of the coordinate is set to 
+%		the lower left corner of the paper.  The positions are given in "points", 
+%		as can be read by gv. These methods were suggested by 
+%		Tsutomu Sakurai at Saitama Univ..
+% 2007-03-30 Taku
+%		The sum of each category and year is made using 
+%		macros \KLItemCost, etc., instead of \KLSum.  This is a step toward
+%		automatically aligning category sums in the same year, in some forms.
+% 2007-04-02 Taku
+%		Added \KLBudgetMiniTabular, \KLMiniSum, etc. to handle
+%		budget tables with multiple category columns.
+% 2007-05-04 Taku
+%		Added \multicolumnDottedLine .
+%==================================================
+% v3 
+% 2007-08-14 Taku
+%		Simplified page handling, by introducing \KLBeginSinglePage,
+%		\KLPageRange, etc..
+% 2007-09-01 Taku
+%		Added a new command, \KLItemNumUnitCostLocation , 
+%		and \KLAddCost to clean things up.
+% 2007-09-06 Taku
+%		Set \KLEven/OddLeft/RightEdge parameters in \KLWaterMark.
+%		Without it, if \KLLeftEdge or \KLRightEdge is used inside watermark,
+%		it generated a very obscure error message, which was hard to track down.
+% 2007-09-09 Taku
+%		Removed clearring \thiswatermark in \KLClearWaterMarks.
+% 2007-09-12 Taku
+%		Added \KLPriorityItemNumUnitCostTwo for Tokusui.
+% 2007-09-14 Taku
+%		Added \KLItemNumUnitCostTwo for tokutei_koubo.
+% 2007-09-17 Taku
+%		In \KLAddCost, costs are added only if it is within the defined year range.
+% 2008-09-02 Taku
+%		  Added \KLMonthPriorityItemNumUnitCostTwo for tokutei_keizoku.
+% 2008-09-07 Taku
+%		   Use \KLJFY to print year in budget tables.
+% 2008-10-21 Taku
+%			Added KLItemNumUnitCostInParen for shorei.
+% 2009-09-03 Taku
+%			Added \dottedLine .
+%==================================================
+% v4
+% 2009-09-06 Taku
+%			Added macros for partial typesetting.
+% 2009-09-12 Taku
+%			Added macros for showing coordinates and edges.
+% 2009-09-13 Taku
+%			Added macros to show boxes and minipage frames and their corner coordinates.
+% 2010-03-04 Taku
+%			Moved macros for calculating lengths and positions from form07_header.tex to here.
+% 2010-04-11 Taku
+%			Added \KLItemCostOne for jisedai, and necessary flags to print budget sums before 
+%			the detailed budget table.
+%==================================================
+% v5
+% 2011-10-20 Taku
+%			By using array package within tabular environment, the following macros were simplified:
+%			\KLTabC, \KLTabR, \KLBudgetMiniTabular, 
+%			New Macros:
+%			\KLCC, \KLCR
+% 2011-10-24 Taku
+%			Removed using \KLTabR from most of the budget tables.
+% 2011-10-26 Taku
+%			Added KLMyBudget.
+%			Modified KLYearItemNumUnitCostTwo to just put the JFY if the second item is blank.  (For Kiban S)
+% 2012-03-10 Taku
+%			Changed the tabcolsep for \KLMyBudget to 0pt.
+% 2012-08-14 Taku
+%			Moved xxx_forms_pdf and _eps directories to under mother.
+% 2012-09-09	Taku
+%			Added \KLbibitem(B) and \KLcite(B).
+% 2012-09-16	Taku
+%			Added \KLOtherApplication, \KLOtherApplicationReasons, and \KLOtherFundReasons
+%			for tokusui (and maybe for others in the future).
+%==================================================
+
+
+%=====================================================
+% New set of commands to place text in picture environment
+% 2007-03-24 Taku Yamanaka (Osaka Univ.)
+%=====================================================
+
+%-------- KLShowOrigin ----------
+\newcommand{\KLShowOrigin}{
+	\put(0,0){\line(1,1){400}}
+	\put(0,0){\line(2,1){400}}
+	\put(0,0){\line(1,2){400}}
+}
+
+%------- KLTombo ------------
+\newcounter{klTomboHalfLen}     \setcounter{klTomboHalfLen}{20}
+\newcommand{\klTomboLen}{40}
+\newcounter{klTomboFrom}
+
+\newcommand{\KLTombo}[2]{
+%	(#1, #2) : (x,y)
+
+	\setcounter{klTomboFrom}{#1}
+	\addtocounter{klTomboFrom}{-\value{klTomboHalfLen}}
+	\put(\value{klTomboFrom},#2){\line(1,0){\klTomboLen}}
+	
+	\setcounter{klTomboFrom}{#2}
+	\addtocounter{klTomboFrom}{-\value{klTomboHalfLen}}
+	\put(#1,\value{klTomboFrom}){\line(0,1){\klTomboLen}}
+}
+
+%------- KLShowCoordinates --------
+\newboolean{KLShowCoordinates}
+\newboolean{KLShowEdges}
+
+\newcommand{\KLShowCoordinates}[1]{%
+	\ifthenelse{\boolean{KLShowCoordinates}}{%
+		\input{#1}
+	}{}
+}
+
+%------- KLShowEdges --------
+\newcommand{\KLShowEdges}{%
+	\ifthenelse{\boolean{KLShowEdges}}{%
+		\put(\KLLeftEdge,700){\color{green}{\line(0,1){150}}}
+		\put(\KLLeftEdge,800){\color{green}{\KLLeftEdge}}
+		\put(\KLRightEdge,700){\color{green}{\line(0,1){150}}}
+		\put(\KLRightEdge,800){\color{green}{\KLRightEdge}}
+	}{}
+}
+
+%-------- KLShowMultiPageEdges --------
+\newcommand{\KLShowMultiPageEdges}[1]{%
+	\KLShowEdges
+	\ifthenelse{\boolean{KLShowEdges}}{%
+		\put(0,\KLMultiPageTopEdge){\color{blue}{\line(1,0){600}}}
+		\put(10,\KLMultiPageTopEdge){\color{blue}{\KLMultiPageTopEdge}}
+		\put(0,\KLMultiPageBottomEdge){\color{blue}{\line(1,0){600}}}
+		\put(10,\KLMultiPageBottomEdge){\color{blue}{\KLMultiPageBottomEdge}}
+		
+		\ifthenelse{\isodd{#1}}{%
+			\put(\KLOddMultiPageLeftEdge,0){\color{blue}{\line(0,1){800}}}
+			\put(\KLOddMultiPageLeftEdge,10){\color{blue}{\KLOddMultiPageLeftEdge}}
+			\put(\KLOddMultiPageRightEdge,0){\color{blue}{\line(0,1){800}}}
+			\put(\KLOddMultiPageRightEdge,10){\color{blue}{\KLOddMultiPageRightEdge}}
+		}{% else
+			\put(\KLEvenMultiPageLeftEdge,0){\color{blue}{\line(0,1){800}}}
+			\put(\KLEvenMultiPageLeftEdge,10){\color{blue}{\KLEvenMultiPageLeftEdge}}
+			\put(\KLEvenMultiPageRightEdge,0){\color{blue}{\line(0,1){800}}}
+			\put(\KLEvenMultiPageRightEdge,10){\color{blue}{\KLEvenMultiPageRightEdge}}
+		}
+	}{}
+}
+
+%------- KLShowCoord ----------
+%  Show coordinate; for internal usage
+%  input
+%	(#1,#2) : the coordinate to be shown
+%	#3 : x offset for the text
+%	#4 : y offset for the text
+%	#5 : color
+
+\newcounter{klTextX}
+\newcounter{klTextY}
+
+\newcommand{\KLShowCoord}[5]{%
+	\setcounter{klTextX}{#1}
+	\setcounter{klTextY}{#2}
+	\addtocounter{klTextX}{#3}
+	\addtocounter{klTextY}{#4}
+	\put(\arabic{klTextX},\arabic{klTextY}){\color{blue}{(#1,#2)}}
+}
+
+
+%------- KLShowBox ----------
+\newboolean{KLShowBoxCoordinates}
+
+\newcounter{klWidth}
+\newcounter{klHeight}
+
+\newcommand{\KLShowBox}[4]{%
+%  Draw a box and show corner coordinates.  (for internal useage)
+%  input
+	% (#1, #2) : (x, y) of top left corner of the box
+	% (#3, #4) : (x, y) of bottom right corner of the box
+	
+	\ifthenelse{\boolean{KLShowEdges}}{%
+		\setcounter{klWidth}{#3}
+		\addtocounter{klWidth}{-#1}
+		\setcounter{klHeight}{#2}
+		\addtocounter{klHeight}{-#4}
+		\multiput(#1,#2)(\arabic{klWidth},0){2}{%
+			\color{blue}{\line(0,-1){\arabic{klHeight}}}}
+%			
+		\multiput(#1,#2)(0,-\arabic{klHeight}){2}{%
+			\color{blue}{\line(1,0){\arabic{klWidth}}}}
+			
+		\ifthenelse{\boolean{KLShowBoxCoordinates}}{%
+			\KLShowCoord{#1}{#2}{0}{2}{blue}
+			\KLShowCoord{#3}{#4}{-45}{2}{blue}
+		}{}
+	}{}
+}
+
+%-------- KLShowMinipageFrame ---------
+\newcommand{\KLShowMinipageFrame}[3]{%
+%  Show top of a minipage frame.
+%  input
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #2) : (x, y) of top right corner of the frame
+
+	\ifthenelse{\boolean{KLShowEdges}}{%
+		\setcounter{klWidth}{#3}
+		\addtocounter{klWidth}{-#1}
+		\put(#1,#2){\color{blue}{\line(1,0){\arabic{klWidth}}}}
+		\multiput(#1,#2)(\arabic{klWidth},0){2}{%
+			\color{blue}{\line(0,-1){50}}}
+		\ifthenelse{\boolean{KLShowBoxCoordinates}}{%
+			\KLShowCoord{#1}{#2}{2}{2}{blue}
+			\KLShowCoord{#3}{#2}{-50}{2}{blue}
+		}{}
+	}{}	
+}
+
+%--------- box parameters ------------
+\newcounter{klParboxX}
+\newcounter{klParboxY}
+\newcounter{klParboxW}
+\newcounter{klParboxH}
+\newcounter{klpbSideMargin}
+\newcounter{klpbTopMargin}
+\newcounter{klpbBottomMargin}
+\newcommand{\klpbSmallMargin}
+
+%---------- KLDefineBox --------------
+\newcommand{\KLDefineBox}[8]{%
+%  Makes box parameters based on margin settings; for internal usage.
+%  input
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #4) : (x, y) of bottom right corner of the frame
+	% #5: top margin; blank = default value for position='t', 0 = no margin
+	% #6: side margin; blank = default value, 0 = no margin
+	% #7: bottom margin; blank = default value for position='b', 0 = no margin
+	% #8: vertical position; t / c / b
+%  output
+	% klParboxX, klParboxW, klParboxY, klParboxH after adjusting margins
+
+	\ifthenelse{\equal{#5}{}}{%
+		\setcounter{klpbTopMargin}{\value{KLParboxTopMargin}}
+	}{%
+		\setcounter{klpbTopMargin}{#5}
+	}
+	
+	\ifthenelse{\equal{#6}{}}{%
+		\setcounter{klpbSideMargin}{\value{KLParboxSideMargin}}
+	}{%
+		\setcounter{klpbSideMargin}{#6}
+	}
+
+	\ifthenelse{\equal{#7}{}}{%
+		\setcounter{klpbBottomMargin}{\value{KLParboxBottomMargin}}
+	}{%
+		\setcounter{klpbBottomMargin}{#7}
+	}
+
+	\setcounter{klParboxX}{#1}
+	\addtocounter{klParboxX}{\value{klpbSideMargin}}
+	
+	\setcounter{klParboxW}{#3}	
+	\addtocounter{klParboxW}{-\value{klParboxX}}
+	\addtocounter{klParboxW}{-\value{klpbSideMargin}}
+
+	\setcounter{klParboxY}{#2}
+	\ifthenelse{\equal{#8}{t}}{%
+		\addtocounter{klParboxY}{-\value{klpbTopMargin}}
+	}{}
+	
+	\setcounter{klParboxH}{\value{klParboxY}}
+	\addtocounter{klParboxH}{-#4}
+	\ifthenelse{\equal{#8}{b}}{%
+		\addtocounter{klParboxH}{-\value{klpbBottomMargin}}
+	}{}
+}	
+
+%--------- KLParbox --------------------
+\newcommand{\KLParbox}[6]{%
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #4) : (x, y) of bottom right corner of the frame
+	% #5 : vertical position within the frame / t = top, c = center, b = bottom
+	% #6 : text
+	% Paragraph-making items, such as list, tabular, etc. should not be used.
+	\KLDefineBox{#1}{#2}{#3}{#4}{}{}{}{#5}%
+	\KLShowBox{#1}{#2}{#3}{#4}%
+
+	\put(\value{klParboxX},\value{klParboxY}){%
+		\parbox[t][\value{klParboxH}pt][#5]{\value{klParboxW}pt}{%
+			\setlength{\parindent}{1zw}%
+			{#6}%
+		}
+	}
+}
+
+%---------- KLTextBox ------------------
+\newcommand{\KLTextBox}[6]{%
+	% for filling a small box.  No parindent.  Only vertical centering is used.
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #4) : (x, y) of bottom right corner of the frame
+	% #5 : side margin; blank=default
+	% #6 : text
+	% Paragraph-making items, such as list, tabular, etc. should not be used.
+
+	\ifthenelse{\equal{#5}{}}{%
+		\renewcommand{\klpbSmallMargin}{3}
+	}{%
+		\renewcommand{\klpbSmallMargin}{#5}
+	}
+	\KLDefineBox{#1}{#2}{#3}{#4}{}{\klpbSmallMargin}{}{c}%
+	\KLShowBox{#1}{#2}{#3}{#4}%
+
+	\put(\value{klParboxX},\value{klParboxY}){%
+		\parbox[t][\value{klParboxH}pt][c]{\value{klParboxW}pt}{%
+			{#6}%
+		}
+	}
+}
+
+%---------- KLMinipageFullArg ---------------
+\newcommand{\KLMinipageFullArg}[7]{%
+	% Minipage will full arguments. Only for internal use.
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #2) : (x, y) of top right corner of the frame
+	% #4 : top margin; blank = default values, 0 = no margin
+	% #5 : side margin; blank = default values, 0 = no margin
+	% #6 : parindent; blank = 0, 1zw is recommended for normal text 
+	% #7 : contents
+	% This can contain list, tabular, etc..
+	
+	\KLDefineBox{#1}{#2}{#3}{#2}{#4}{#5}{}{t}%
+	\KLShowMinipageFrame{#1}{#2}{#3}%
+
+	\put(\value{klParboxX},\value{klParboxY}){%
+		\begin{minipage}[t]{\value{klParboxW}pt}%
+			\ifthenelse{\equal{#6}{}}{%
+				}{%
+				\setlength{\parindent}{#6}%
+			}%
+			{#7}%
+		\end{minipage}%
+	}
+}
+
+%----------- KLMinipage ------------
+\newcommand{\KLMinipage}[4]{%
+	% minipage with some margins around the frame.  Good for normal text.
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #2) : (x, y) of top right corner of the frame
+	% #4 : contents
+	\KLMinipageFullArg{#1}{#2}{#3}{}{}{1zw}{#4}
+}
+
+%---------- KLNoMarginMinipage ----------
+\newcommand{\KLNoMarginMinipage}[4]{%
+	% minipage with  no margins around the frame.  Good for tabular, etc.
+	% (#1, #2) : (x, y) of top left corner of the frame
+	% (#3, #2) : (x, y) of top right corner of the frame
+	% #4 : contents
+	\KLMinipageFullArg{#1}{#2}{#3}{0}{0}{}{#4}
+}
+
+%=====================================================
+% Macro to supply commas every 3 digits (up to 9 digits)
+%	Imported from kkh.mac for Kakenhi Macro.
+%=====================================================
+%
+\newif\ifNumWithCommas \NumWithCommastrue
+\def\NumWithCommas{\NumWithCommastrue}
+\def\NumWithoutCommas{\NumWithCommasfalse}
+\newcount\Numa
+\newcount\Numb
+\def\Numempty{}%output blank if "-0" is given
+\def\Number#1{\edef\Numpar{#1}\ifx\Numempty\Numpar\else%
+\ifNumWithCommas\Numa=#1\relax
+\ifnum\Numa>999999\divide\Numa by 1000000
+\number\Numa,%
+\multiply\Numa by -1000000\advance\Numa by #1\relax
+\Numb=\Numa\divide\Numa by 1000
+\ifnum\Numa<100 \ifnum\Numa<10 0\fi0\fi\number\Numa,%
+\multiply\Numa by -1000\advance\Numa by \Numb
+\ifnum\Numa<100 \ifnum\Numa<10 0\fi0\fi\number\Numa%
+\else\ifnum\Numa>999\divide\Numa by 1000
+\number\Numa,%
+\multiply\Numa by -1000\advance\Numa by #1\relax
+\ifnum\Numa<100 \ifnum\Numa<10 0\fi0\fi\number\Numa%
+\else\number\Numa\fi\fi\else\number#1\fi\fi}
+
+%======================================================
+% Macro to display LaTeX counter with commas every 3 digits.
+%======================================================
+\newcommand{\NumC}[1]{\Number{\value{#1}}}
+
+%======================================================
+% Macros to align (right-justify, center) elements within a tabular cell
+% whose width is defined by p{...}.
+% 2006-06-25 Taku
+% 	These are necessary, because the cell width should be given explicitly
+% 	by p{...mm} to match the given table in a tabular environment.  
+% 	One could allocate a width with \phantom{...},
+% 	but it is a little tricky, since it depends on the font size.
+%======================================================
+
+%---------------------------------------------------------------------
+% Center text within a tabular cell allocated by p{...}
+%\newcommand{\KLTabC}[1]{\multicolumn{1}{c}{#1}}
+\newcommand{\KLTabC}[1]{\centering\arraybackslash#1}
+% This new method does not require a dummy table row to put them in correct columns.
+%
+% This should be used in tabular definition, as:
+%	\begin{tabular}[t]{>{\KLCC}p{30pt}p{50pt}}
+\newcommand{\KLCC}{\centering\arraybackslash}
+
+%---------------------------------------------------------------------
+% Right justify text within a tabular cell allocated  by p{...}
+%\newcommand{\KLTabR}[1]{\multicolumn{1}{r@{\ }}{#1}}
+\newcommand{\KLTabR}[1]{\raggedleft\arraybackslash#1}
+
+% This should be used in tabular definition, as:
+%	\begin{tabular}[t]{>{\KLCR}p{30pt}p{50pt}}
+\newcommand{\KLCR}{\raggedleft\arraybackslash}%
+
+%---------------------------------------------------------------------
+% Right justify number (with comma every 3 digits) 
+% within a tabular cell allocated by p{...}
+\newcommand{\KLTabRNum}[1]{\KLTabR{\Number{#1}}}
+
+%=================================================
+%  counter tools
+%=================================================
+\newcounter{KLtmp}
+
+%------------------------------------------------------------------------------
+% Makes a set of counters, with prefix #1, followed by 
+% suffix ranging from 0 to #2 - 1.
+% For example, \KLnewcounter{mine}{3} makes counters
+% mine0, mine1, and mine2 .
+%-------------------------------------------------------------------------------
+\newcommand{\KLnewcounter}[2]{
+	\setcounter{KLtmp}{0}
+	
+	\whiledo{\value{KLtmp} < #2}{
+		\newcounter{#1\arabic{KLtmp}}
+		\stepcounter{KLtmp}
+	}
+}
+
+%------------------------------------------------------------------------------
+% Dumps the contents of the counters.
+%------------------------------------------------------------------------------
+\newcommand{\KLdumpcounter}[2]{
+	\setcounter{KLtmp}{0}
+	
+	\whiledo{\value{KLtmp} < #2}{
+		#1\arabic{KLtmp} : \arabic{#1\arabic{KLtmp}}\\
+		\stepcounter{KLtmp}
+	}
+}
+
+%=======================================================
+% LaTeX macros to add costs.
+%	2006-06-14 Taku Yamanaka
+%=======================================================
+\newcounter{KLCost}				% to calculate cost = #units x unit cost
+\newcounter{KLGrandTotalValue}		% for the grand total of all the categories in all years
+\setcounter{KLGrandTotalValue}{0}
+
+\newcommand{\KLCostCategory}{KLequipments}
+\newcounter{KLYearCount}
+\newcounter{KLPrintYear}
+
+% Make counters for annual sums for each category-----------------------
+\newcommand{\KLMaxYear}{8}
+\KLnewcounter{KLequipments}{\KLMaxYear}
+\KLnewcounter{KLexpendables}{\KLMaxYear}
+\KLnewcounter{KLdomestic}{\KLMaxYear}
+\KLnewcounter{KLforeign}{\KLMaxYear}
+\KLnewcounter{KLtravel}{\KLMaxYear}
+\KLnewcounter{KLgratitude}{\KLMaxYear}
+\KLnewcounter{KLmisc}{\KLMaxYear}
+\KLnewcounter{KLAnnualSum}{\KLMaxYear}
+
+%------------------------------------------------
+% Add up the given cost to category-year sum, category sum, year-sum, and total.
+% 2007-09-01 Taku
+% 2007-09-17 Taku: Add costs only if it is within the defined year range.
+%------------------------------------------------
+\newcommand{\KLAddCost}[1]{%
+	\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+		%pass
+	}{%
+		\addtocounter{\KLCostCategory0}{#1}%
+		\addtocounter{\KLCostCategory\arabic{KLYearCount}}{#1}%
+		\addtocounter{KLAnnualSum\arabic{KLYearCount}}{#1}%
+		\addtocounter{KLAnnualSum0}{#1}%
+		\ifthenelse{\equal{\KLCostCategory}{KLdomestic}}{%
+			\addtocounter{KLtravel0}{#1}%
+			\addtocounter{KLtravel\arabic{KLYearCount}}{#1}%
+		}{}%
+		\ifthenelse{\equal{\KLCostCategory}{KLforeign}}{%
+			\addtocounter{KLtravel0}{#1}%
+			\addtocounter{KLtravel\arabic{KLYearCount}}{#1}%
+		}{}%
+	}%
+}
+
+%--------------------------------------------------------------------------------
+% Show the item and cost in a table.  Cost will be added to the sums.
+% Usage example:
+%	\KLItemCost{Expensive item}{12345678}
+% 2007-03-28 Taku
+%	Changed to add to final sums directly.
+% 2007-04-02 Taku
+%	Added \KLCostWidth to specify the width for cost column.
+%	If this is non-zero, there is no need to have a \phantom value at the top of the tabular.
+% 2010-04-11 Taku
+%	Added \KLItemCostOne for jisedai.  Since a budget summary has to be printed on the 1st page,
+%	and annual sums are given before each item, new boolean flags, 
+%	KLPrintBudgetTableFlag and KLCalculateBudgetFlag are introduced.
+% 2010-04-15 Taku
+%	Added KLkansetsu counter for jisedai.
+%--------------------------------------------------------------------------------
+\newlength{\KLCostWidth}
+\setlength{\KLCostWidth}{0pt}
+
+\newboolean{KLPrintBudgetTableFlag}
+\newboolean{KLCalculateBudgetFlag}
+
+\newcommand{\KLItemCost}[2]{%
+	\ifthenelse{\KLCostWidth=0}{%
+		#1 & \Number{#2}%
+	}{%
+		#1&\makebox[\KLCostWidth][r]{\Number{#2}}%
+	}%
+	\KLAddCost{#2}%
+	\\
+}
+
+\newcommand{\KLItemCostOne}[3]{%
+	\ifthenelse{\boolean{KLPrintBudgetTableFlag}}{%
+		\ifthenelse{\KLCostWidth=0}{%
+			#1 & \Number{#2} & #3%
+		}{%
+			#1&\makebox[\KLCostWidth][r]{\Number{#2}} & #3%
+		}%
+	}{}
+	\ifthenelse{\boolean{KLCalculateBudgetFlag}}{%
+		\KLAddCost{#2}%
+	}{}
+	\ifthenelse{\boolean{KLPrintBudgetTableFlag}}{%
+		\\
+	}{}
+}
+
+%-----------------------------------------------------------------
+% Print item and cost in one KLParbox for Shorei kenkyu
+%-----------------------------------------------------------------
+\newcommand{\KLItemDotsCost}[2]{%
+	#1 \\ 
+	\dotfill
+	\Number{#2}千円%
+	\KLAddCost{#2}%
+	\\
+}
+
+
+%---------------------------------------------------------------------------------
+% Show item, the number of units, unit cost, and overall cost in a table.
+% The cost is calculated by the number of units * unit cost, automatically.
+% The overall cost will be added to the sums.
+% Usage example:
+%	\KLItemNumUnitCost{cheap item}{100}{20}%
+%    The percentage character at the end avoids extra blank after the calculated cost.
+%---------------------------------------------------------------------------------
+\newcommand{\KLItemNumUnitCost}[3]{%
+	\setcounter{KLCost}{#2*#3}%
+	#1 & #2 & \Number{#3} & \Number{\value{KLCost}}%
+	\KLAddCost{\value{KLCost}}%
+	\\
+}
+
+%----------------------------------------------------------------
+% Offset year for budget tables
+%----------------------------------------------------------------
+\newcommand{\KLJFY}[1]{%  予算の表で年度を書く部分
+	\hspace{6pt}{\normalsize #1}%
+}
+
+%---------------------------------------------------------------------------------
+% Show year, item, the number of units, unit cost, and overall cost and 2 more arguments in a table.
+%---------------------------------------------------------------------------------
+\newcommand{\KLYearItemNumUnitCostTwo}[6]{%
+	\ifthenelse{\equal{#2}{}}{%
+		\KLJFY{#1}\\
+	}{%
+		\setcounter{KLCost}{#3*#4}%
+		\KLJFY{#1} & #2 & #3 & \Number{#4}
+		& \Number{\value{KLCost}}
+		& #5 & #6
+		\KLAddCost{\value{KLCost}}%
+		\\
+	}%
+}
+
+%---------------------------------------------------------------------------------
+% Show year, item, the number of units, unit cost, 
+% and overall cost and 2 more arguments in a table.
+% The year is shown only for the first item.
+%---------------------------------------------------------------------------------
+%	#1: item
+%	#2: number of units
+%	#3: unit cost
+%	#4: location to be installed
+%	#5: purchase month
+\newcommand{\KLItemNumUnitCostTwo}[5]{%
+	\setcounter{KLCost}{#2*#3}%
+	\ifthenelse{\value{KLPrintYear}<0}{%
+		%pass
+	}{%
+		\KLJFY{\arabic{KLPrintYear}}%
+	}%
+	& #1 & #2 & \Number{#3}
+	& \Number{\value{KLCost}}
+	& #4 & #5
+	\KLAddCost{\value{KLCost}}%
+	\setcounter{KLPrintYear}{-1}% disable printing year
+	\\
+}
+
+%---------------------------------------------------------------------------------
+% Show year, priority, item, the number of units, unit cost, 
+% and overall cost and 2 more arguments in a table.
+%---------------------------------------------------------------------------------
+%	#1: priority
+%	#2: item
+%	#3: number of units
+%	#4: unit cost
+%	#5: location to be installed
+%	#6: purchase month
+\newcommand{\KLPriorityItemNumUnitCostTwo}[6]{%
+	\setcounter{KLCost}{#3*#4}%
+%	\KLPrintYear & #1 & #2 & \KLTabR{#3} & \KLTabR{\Number{#4}} 
+	\ifthenelse{\value{KLPrintYear}<0}{%
+		%pass
+	}{%
+		\arabic{KLPrintYear}%
+	}%
+	& #1 & #2 & #3 & \Number{#4}
+	& \Number{\value{KLCost}}
+	& #5 & #6
+	\KLAddCost{\value{KLCost}}%
+	\setcounter{KLPrintYear}{-1}% disable printing year
+	\\
+}
+
+%----------------------------------------------------------------------------
+% Show month, priority, item, number of units, unit cost, overall cost, 
+% and 2 more arguments in table. (for tokusui_keizoku JFY2009)
+%-----------------------------------------------------------------------------
+%	#1: month
+%	#2: priority
+%	#3: item
+%	#4: number of units
+%	#5: unit ocst
+%	#6, #7: additional arguments
+\newcommand{\KLMonthPriorityItemNumUnitCostTwo}[7]{%
+	\setcounter{KLCost}{#4*#5}%
+	{\footnotesize #1} & #2 & #3 & #4 & \Number{#5}
+	& \Number{\value{KLCost}}
+	& \KLTabC{#6} & #7
+	\KLAddCost{\value{KLCost}}%
+	\\
+}
+
+%----------------------------------------------------------------------------
+% Show item, the number of units, unit cost, and overall cost.
+% The first column in tabular will be formatted in 
+%	item (number x unitcost).
+% The overall cost in the second column is calculated automatically.
+% 2008-10-21 Taku
+%----------------------------------------------------------------------------
+%	#1 item
+%	#2 number of units
+%	#3 unit cost
+%----------------------------------------------------------------------------
+\newcommand{\KLItemNumUnitCostInParen}[3]{%
+	\setcounter{KLCost}{#2*#3}%
+	\ifthenelse{\KLCostWidth=0}{%
+		#1(#2$\times$\Number{#3}) & \Number{\value{KLCost}}%
+	}{%
+		#1(#2$\times$\Number{#3})
+		&\makebox[\KLCostWidth][r]{\Number{\value{KLCost}}}%
+	}%
+	\KLAddCost{\value{KLCost}}%
+	\\%
+}
+
+
+%----------------------------------------------------------------------------
+% Show item, the number of units, unit cost, location, and overall cost.
+% The first column in tabular will be formatted in 
+%	item (number x unitcost)(location).
+% The overall cost in the second column is calculated automatically.
+% 2007-09-01 Taku
+%	This functionality was requested by Hiroyuki Ikemoto (Univ. Toyama).
+%----------------------------------------------------------------------------
+%	#1 item
+%	#2 number of units
+%	#3 unit cost
+%	#4 location to be installed
+%----------------------------------------------------------------------------
+\newcommand{\KLItemNumUnitCostLocation}[4]{%
+	\setcounter{KLCost}{#2*#3}%
+	#1(#2$\times$\Number{#3})(#4) & \Number{\value{KLCost}}
+	\KLAddCost{\value{KLCost}}%
+	\\%
+}
+
+%-----------------------------------------------------------------------------
+% Small tabular used in a table with multiple categories (equipments, expendables, ...)
+%-----------------------------------------------------------------------------
+% #1 : cost category, such as KLequipments, KLexpendables, ...
+% #2:  width of item column
+% #3:  width of cost column
+% #4:  contents of the mini-tabularini
+
+\newcommand{\KLBudgetMiniTabular}[4]{%
+	\multicolumn{2}{l}{
+		\renewcommand{\KLCostCategory}{#1}%
+		\setlength{\tabcolsep}{1pt}%
+		\begin{tabular}[t]{p{#2}>{\KLCR}p{#3}}
+			#4
+		\end{tabular}
+	}
+}
+
+\newcommand{\KLBudgetMiniTabularWithVerticalLine}[4]{%
+		\renewcommand{\KLCostCategory}{#1}%
+		\setlength{\tabcolsep}{1pt}%
+		\begin{tabular}[t]{p{#2}>{\KLCR}p{#3}}
+			#4
+		\end{tabular}
+		& % Will not use multicolumn, because the vertical line within it will not extend all the way down.
+}
+
+%----------------------------------------------------------------------
+% Show per category and year sum
+%----------------------------------------------------------------------
+\newcommand{\KLMiniSum}[1]{%
+	\Number{\value{#1\arabic{KLYearCount}}}
+}%
+
+%---------------------------------------------------------------------
+%  Print my budget for this year and throughout the period, to be used in f15_otherapp_***.
+%---------------------------------------------------------------------
+%	#1 this year's budget for myself
+%	#2 total budget for myself
+%	If #1 is blank, use automatically calculated amount.  (No collaborators)
+%---------------------------------------------------------------------
+\newcommand{\KLMyBudget}[2]{%
+	{%
+		\setlength{\tabcolsep}{0pt}%
+		\ifthenelse{\equal{#1}{}}{%
+			\makebox{%
+				\begin{tabular}[t]{r}
+					\NumC{KLAnnualSum1}\\
+					(\NumC{KLAnnualSum0})\\
+				\end{tabular}%
+			}%
+		}{%
+			\makebox{%
+				\begin{tabular}[t]{r}
+					\Number{#1}\\
+					(\Number{#2})\\
+				\end{tabular}%
+			}%
+		}%
+	}%
+}
+
+
+%---------------------------------------------------------------------
+% Print the grand total of the costs to console.
+%---------------------------------------------------------------------
+\newcommand{\KLPrintGrandTotal}{%
+	\typeout{}%
+	\typeout{======= The total budget is \arabic{KLAnnualSum0} yen. =======}%
+	\typeout{}%
+}
+
+%============================================================
+%  LaTeX macros to handle "efforts"		... sigh, who cares such numbers??
+%============================================================
+
+\newcounter{KLRemainingEffort}
+
+%-----------------------------------------------------
+\newcommand{\KLResetEffort}{
+	\setcounter{KLRemainingEffort}{100}
+}
+
+%-----------------------------------------------------
+\newcommand{\KLEffort}[1]{%
+	#1%
+	\addtocounter{KLRemainingEffort}{-#1}%
+}
+
+%====================================================================
+% macros for handling other applications and other funds
+%====================================================================
+\newcommand{\KLOtherApplication}[9]{%
+% -----------------------------------------------------------
+%	#1 : 資金制度・研究費名
+%	#2 : 研究開始年度
+%	#3 : 研究終了年度
+%	#4 : 配分機関等名
+%	#5 : 研究課題名
+%	#6 : 代表者氏名（自分が代表者の場合は {} のように空白にする)
+%	#7 : 初年度に「本人が」使う額
+%	#8 : 期間全体で「本人が」使う額
+%	#9 : エフォート
+% -----------------------------------------------------------
+	\ifthenelse{\equal{#4}{}}{%
+		#1 (#2$\sim$#3)
+	}{%
+		#1 (#2 $\sim$ #3・#4)
+	}
+	\ifthenelse{\equal{#6}{}}{%
+		& #5
+		& 代表
+	}{%
+		& #5 (#6)
+		& 分担
+	}
+	& \KLMyBudget{#7}{#8}
+	\ifthenelse{\equal{#9}{}}{%
+		& --%
+	}{%
+		& \KLEffort{#9}
+	}
+}
+
+\newcommand{\KLOtherFund}[9]{%
+	\KLOtherApplication{#1}{#2}{#3}{#4}{#5}{#6}{#7}{#8}{#9}%
+}
+
+\newcommand{\KLOtherApplicationReasons}[3]{%
+	& I
+	& #1\\
+	\cline{6-7}
+	& & & & & II 
+	& \begin{minipage}[t]{\KLOtherApplicationReasonsWidth}
+		~#2\\%  ~ is added to avoid error when #1 is blank
+		(総額 \Number{#3} 千円)
+	   \end{minipage}
+	\\
+	\hline
+}
+
+\newcommand{\KLOtherFundReasons}[3]{%
+	& I
+	& #1\\
+	\cline{6-7}
+	& & & & 
+	& II
+	& #2\\
+	\cline{6-7}
+	& & & &
+	& III
+	& #3\\ 
+	\hline
+}
+
+%====================================================================
+% macros for making group_table.tex
+%====================================================================
+\newcounter{KLNumPeople}		% number of people in the group
+\setcounter{KLNumPeople}{-1}		% not to count the first header row...
+\newcounter{KLDistBudgetSum}	% sum of distributed budget
+
+\newcommand{\KLGname}[4]{%
+	\begin{tabular}{l}%
+		#1\\% kenkyusha ID
+		#2\\% furigana
+		#3\\% name in kanji
+		age: #4 % age
+	\end{tabular}%
+	&%
+	\ifthenelse{\equal{#3}{}}{% if blank, do nothing
+	}{%
+		\stepcounter{KLNumPeople}%
+	}%
+}
+
+\newcommand{\KLGposition}[3]{%
+	\begin{tabular}{l}%
+		#1\\% institution
+		#2\\% division
+		#3% position
+	\end{tabular}%
+	&%
+}
+
+\newcommand{\KLGfield}[3]{%
+	\begin{tabular}{l}%
+		#1\\% research field
+		#2\\%  degree
+		#3% responsibility in this study
+	\end{tabular}%
+	&%
+}
+
+\newcommand{\KLGbudget}[1]{%
+	\Number{#1} &% first year budget (k yen)
+	\addtocounter{KLDistBudgetSum}{#1}
+}
+
+\newcommand{\KLGeffort}[1]{%
+	#1 \\% effort for this study
+}
+
+%==================================================
+% Macros for calculating lengths and margins
+%==================================================
+\newcommand{\KLResetToStandardPositions}{%
+	\renewcommand{\KLOddMultiPageLeftEdge}{\KLStandardOddMultiPageLeftEdge}
+	\renewcommand{\KLOddMultiPageRightEdge}{\KLStandardOddMultiPageRightEdge}
+	\renewcommand{\KLEvenMultiPageLeftEdge}{\KLStandardEvenMultiPageLeftEdge}
+	\renewcommand{\KLEvenMultiPageRightEdge}{\KLStandardEvenMultiPageRightEdge}
+	
+	\renewcommand{\KLMultiPageTopEdge}{\KLStandardMultiPageTopEdge}
+	\renewcommand{\KLMultiPageBottomEdge}{\KLStandardMultiPageBottomEdge}
+	
+	\renewcommand{\KLOddLeftEdge}{\KLStandardOddLeftEdge}
+	\renewcommand{\KLOddRightEdge}{\KLStandardOddRightEdge}
+	\renewcommand{\KLEvenLeftEdge}{\KLStandardEvenLeftEdge}
+	\renewcommand{\KLEvenRightEdge}{\KLStandardEvenRightEdge}
+}
+
+\newcommand{\KLCalculateLengths}{%
+	\setlength{\textwidth}{\KLOddMultiPageRightEdge pt}
+	\addtolength{\textwidth}{-\KLOddMultiPageLeftEdge pt}
+	\addtolength{\textwidth}{-13pt}
+
+	\setlength{\textheight}{\KLMultiPageTopEdge pt}
+	\addtolength{\textheight}{-\KLMultiPageBottomEdge pt}
+	\addtolength{\textheight}{-14 pt}
+}
+
+\newcommand{\KLCalculatePositions}{%
+	\setlength{\KLoddsidemargin}{\KLOddMultiPageLeftEdge pt}
+	\setlength{\KLevensidemargin}{\KLEvenMultiPageLeftEdge pt}
+	\addtolength{\KLoddsidemargin}{-64pt}
+	\addtolength{\KLevensidemargin}{-64pt}
+
+	\setlength{\KLtopmargin}{777pt}
+	\addtolength{\KLtopmargin}{-\KLMultiPageTopEdge pt}
+
+	\setcounter{KLCOddPictureInWaterMarkX}{\KLOddMultiPageLeftEdge +8}
+	\setcounter{KLCEvenPictureInWaterMarkX}{\KLEvenMultiPageLeftEdge +8}
+	\setcounter{KLCPictureInWaterMarkY}{\KLMultiPageTopEdge - 4}
+	\setcounter{KLCOddPictureX}{\KLOddMultiPageLeftEdge +19}
+	\setcounter{KLCEvenPictureX}{\KLEvenMultiPageLeftEdge +19}
+	\setcounter{KLCPictureY}{\KLMultiPageTopEdge -13}
+
+	% margins
+	\setlength{\oddsidemargin}{\KLoddsidemargin}
+	\setlength{\evensidemargin}{\KLevensidemargin}
+	\setlength{\topmargin}{\KLtopmargin}
+
+	% picture environment location, in  units of points
+	\renewcommand{\KLOddPictureInWaterMarkX}{\arabic{KLCOddPictureInWaterMarkX}}
+	\renewcommand{\KLEvenPictureInWaterMarkX}{\arabic{KLCEvenPictureInWaterMarkX}}
+	\renewcommand{\KLPictureInWaterMarkY}{\arabic{KLCPictureInWaterMarkY}}
+	\renewcommand{\KLOddPictureX}{\arabic{KLCOddPictureX}}
+	\renewcommand{\KLEvenPictureX}{\arabic{KLCEvenPictureX}}
+	\renewcommand{\KLPictureY}{\arabic{KLCPictureY}}
+
+}
+
+%===========================================================
+% commands to reset margins and coordinate parameters at the beginning of page
+\newcommand{\KLStandardLengths}{% Later, if needed, this should be called BEFORE \clearpage
+	\KLResetToStandardPositions
+	\KLCalculateLengths
+}
+
+\newcommand{\KLStandardPositions}{%Later, if needed, this should be called AFTER \clearpage
+	\KLResetToStandardPositions
+	\KLCalculatePositions
+}
+
+
+%==================================================
+% Macros for checking page numbers
+%==================================================
+\newcommand{\KLNewPageNo}{}
+\newcounter{klSecondPage}
+\newcommand{\KLcpnItem}{}
+\newcommand{\KLcpnBegPage}{0}
+\newcommand{\KLcpnEndPage}{0}
+
+%========================================
+% Tools to handle clear pages, and checking pages	(2007)
+%========================================
+\newcommand{\KLCheckPageLimit}{%
+	\ifthenelse{\value{page}>\KLcpnEndPage}{
+		\phantom{x}	\vspace{2cm}
+		{\LARGE `` \KLcpnItem ''cannot go beyond p.\KLcpnEndPage .\\
+		　　Reduce the number of lines.}\\
+		{\Large     (If the preceeding page is empty, try inserting\\
+		
+		　　{\tt \textbackslash vspace\{2cm\}  \textbackslash phantom\{x}\}\\
+		
+		　　at the end of ``\KLcpnItem''.)
+		}
+		\clearpage
+	}{}
+}
+
+\newcommand{\KLAdvancePages}{%
+	%-- Advance pages if necessary
+	\ifthenelse{\value{page}<\KLcpnEndPage}{
+		\clearpage	\phantom{x}
+	}{}
+	%-- Advance pages if necessary
+	\ifthenelse{\value{page}<\KLcpnEndPage}{
+		\clearpage	\phantom{x}
+	}{}
+	%-- Advance pages if necessary
+	\ifthenelse{\value{page}<\KLcpnEndPage}{
+		\clearpage	\phantom{x}
+	}{}
+	%-- Advance pages if necessary
+	\ifthenelse{\value{page}<\KLcpnEndPage}{
+		\clearpage	\phantom{x}
+	}{}
+	%-- Advance pages if necessary
+	\ifthenelse{\value{page}<\KLcpnEndPage}{
+		\clearpage	\phantom{x}
+	}{}
+}
+
+\newcommand{\KLClearWaterMarks}{%
+	%--empty watermarks
+	\watermark{}
+%	\thiswatermark{}
+	\rightwatermark{}
+	\leftwatermark{}
+}
+
+\newcommand{\KLPageRange}[4]{%
+%	#1 : item description
+%	#2 : beginning page number
+%	#3 : ending page number
+%	#4 : commands to execute before newpage
+	\ifthenelse{\KLcpnBegPage=0}{%
+		%pass
+	}{%
+		\ifthenelse{\equal{\KLcpnItem}{SINGLE}}{%
+			%pass because this means single page
+		}{%
+			\KLCheckPageLimit
+		}%
+		\KLAdvancePages
+	}
+	#4% commands to execute before \newpage
+	\KLCalculateLengths
+	\newpage
+	\KLCalculatePositions
+	\KLClearWaterMarks
+	\renewcommand{\KLcpnItem}{#1}
+	\renewcommand{\KLcpnBegPage}{#2}
+	\renewcommand{\KLcpnEndPage}{#3}
+	\setcounter{page}{#2}
+}
+
+%----------------------------------------------------------------
+\newcommand{\KLMultiPage}[2]{%
+%	For using the same watermark for multiple pages
+%	#1 : page number
+%	#2 : commands to execute before \newpage
+	\KLPageRange{SINGLE}{#1}{#1}{#2}%
+	\setcounter{KLSubPageNo}{0}%
+}
+
+%==========================================
+% Frame definition
+%==========================================
+\newcommand{\KLPictureX}{}
+
+% Making the below "environment" did not properly replace \KLcpnItem, so stick to "command".
+\newcommand{\KLBeginSinglePage}[2]{%
+%	#1 : page number
+%	#2 : commands to execute before \newpage
+	\KLPageRange{SINGLE}{#1}{#1}{#2}%
+	\ifthenelse{\isodd{#1}}{%
+		\renewcommand{\KLLeftEdge}{\KLOddLeftEdge}%
+		\renewcommand{\KLRightEdge}{\KLOddRightEdge}%
+		\renewcommand{\KLPictureX}{\KLOddPictureX}%
+	}{%				
+		\renewcommand{\KLLeftEdge}{\KLEvenLeftEdge}%
+		\renewcommand{\KLRightEdge}{\KLEvenRightEdge}%
+		\renewcommand{\KLPictureX}{\KLEvenPictureX}%
+	}%
+	\KLStandardPositions%
+	\begin{picture}(0,0)(\KLPictureX,\KLPictureY)
+		\put(0,0){\includegraphics{\KLForms_\KLFormFormat/\KLYoshiki-page#1.\KLFormFormat}}
+		\KLShowCoordinates{../coord/coord-page#1}%
+		\KLShowEdges%
+}
+
+\newcommand{\KLEndSinglePage}{%
+	\end{picture}
+}
+
+%========================================
+% Watermark definition
+%========================================
+\newcommand{\KLPictureInWaterMarkX}{}
+
+\newcommand{\KLWaterMark}[2]{%
+	\ifthenelse{\isodd{#1}}{%
+		\renewcommand{\KLLeftEdge}{\KLOddLeftEdge}%
+		\renewcommand{\KLRightEdge}{\KLOddRightEdge}%
+		\renewcommand{\KLPictureX}{\KLOddPictureInWaterMarkX}%
+	}{%
+		\renewcommand{\KLLeftEdge}{\KLEvenLeftEdge}%
+		\renewcommand{\KLRightEdge}{\KLEvenRightEdge}%
+		\renewcommand{\KLPictureX}{\KLEvenPictureInWaterMarkX}%
+	}%
+	
+	\begin{picture}(0,0)(\KLPictureX,\KLPictureInWaterMarkY)
+		\put(0,0){\includegraphics{\KLForms_\KLFormFormat/\KLYoshiki-page#1.\KLFormFormat}}
+		#2
+		\KLShowCoordinates{../coord/coord-page#1}%
+		\KLShowMultiPageEdges{#1}%
+	\end{picture}
+}
+
+
+%==================================================
+%	Tools for doing partial-typsetting
+%==================================================
+%	2009-09-06 Taku 
+%		klTypesetPage0 : partial typesetting is chosen
+%		klTypesetPagex (x=1..) : page-x is chosen for typesetting
+%--------------------------------------------------------------------------------
+
+%-------------------------------------
+%	initialize flags
+%-------------------------------------
+\newcommand{\KLInitTypesettingPageSelection}{
+	\newcounter{klpage}
+	\newcounter{klpageLimit}
+	\newboolean{klTypesetThisPage}
+	\newcommand{\klMaxPage}{21}
+	
+	\whiledo{\value{klpage}< \klMaxPage}{%
+		\newboolean{klTypesetPage\arabic{klpage}}%
+		\stepcounter{klpage}%
+	}%
+}
+
+%-------------------------------------
+%	set flag for page #1
+%-------------------------------------
+\newcommand{\KLTypesetPage}[1]{%
+	\setboolean{klTypesetPage0}{true}
+	\setcounter{klpage}{#1}
+	\setboolean{klTypesetPage\arabic{klpage}}{true}
+}
+
+%-------------------------------------
+%	set flags for pages #1 .. #2
+%-------------------------------------
+\newcommand{\KLTypesetPagesInRange}[2]{%
+	\setcounter{klpage}{#1}
+	\setcounter{klpageLimit}{#2}
+	\stepcounter{klpageLimit}
+	\whiledo{\value{klpage}<\value{klpageLimit}}{%
+		\KLTypesetPage{\arabic{klpage}}
+		\stepcounter{klpage}
+	}
+}
+	
+
+%-------------------------------------
+%	dump flags
+%-------------------------------------
+\newcommand{\KLShowSelectedTypesettingPages}{%
+	\ifthenelse{\boolean{klTypesetPage0}}{%
+	}{%else
+		All pages are selected
+	}
+	\setcounter{klpage}{0}
+	\whiledo{\value{klpage}<\klMaxPage}{%
+		\ifthenelse{\boolean{klTypesetPage\arabic{klpage}}}{%
+			page \arabic{klpage}\\
+		}{%
+		}
+		\stepcounter{klpage}
+	}%
+}
+
+%-------------------------------------
+%	\input{#3} if at least one page in range #1 .. #2 is selected for typesetting
+%-------------------------------------
+%	#1 : page low limit
+%	#2 : page upper limit (including)
+%	#3 : file to include
+%	...........................................
+\newcommand{\KLInputIfPageInRangeIsSelected}[3]{%
+	\setboolean{klTypesetThisPage}{false}
+	\ifthenelse{\boolean{klTypesetPage0}}{%
+	}{%else
+		\setboolean{klTypesetThisPage}{true}
+	}
+
+	\setcounter{klpage}{#1}
+	\setcounter{klpageLimit}{#2}
+	\stepcounter{klpageLimit}
+	\whiledo{\value{klpage}<\value{klpageLimit}}{%
+		\ifthenelse{\boolean{klTypesetPage\arabic{klpage}}}{%
+			\setboolean{klTypesetThisPage}{true}
+		}{%
+		}
+		\stepcounter{klpage}
+	}
+	\ifthenelse{\boolean{klTypesetThisPage}}{%
+		\input{#3}
+	}{%else
+	}
+}			
+
+%-------------------------------------
+%	\input{#2} if page #1 is selected for typesetting
+%-------------------------------------
+\newcommand{\KLInputIfSelected}[2]{%
+	\KLInputIfPageInRangeIsSelected{#1}{#1}{#2}
+}
+
+
+%==================================================
+% Miscellaneous macros
+%==================================================
+
+%----------------------------------------------------------------------
+% Draw dotted lines across a multiple column table
+%----------------------------------------------------------------------
+\newcommand{\multicolumnDottedLine}[1]{%
+%	\multicolumn{#1}{@{\hspace{-2mm}}c}{\dotfill}\\%
+	\multicolumn{#1}{@{}c}{\dotfill}\\%
+}
+
+\newcommand{\dottedLine}{%
+	\\\noindent
+	\dotfill\\
+}
+
+%----------------------------------------------------------------------
+% Solid line
+%----------------------------------------------------------------------
+\newlength{\KLLineLength}
+\newcommand{\solidLine}[1]{
+	\setlength{\KLLineLength}{\KLRightEdge pt}%
+	\addtolength{\KLLineLength}{-\KLLeftEdge pt}%
+%----------- keep an empty line between here and \noindent so that it works after normal text and list.
+
+	\noindent
+	\hspace{-10pt}
+	\rule[10pt]{\KLLineLength}{#1}% #1 = 0.5pt, ....
+	\vspace{-10pt}
+}
+
+%----------------------------------------------------------------------
+% publication list (Thanks to Tetsuo Iwakuma [bulletin board #876])
+%----------------------------------------------------------------------
+\newcounter{KLBibCounter}
+\newcounter{KLBibCounterB}
+
+\makeatletter	
+	\newcommand{\KLbibitem}{%
+		\stepcounter{KLBibCounter}%
+		\let \@currentlabel \theKLBibCounter
+		\arabic{KLBibCounter}. %
+	}
+
+	\newcommand{\KLbibitemB}{%
+		\stepcounter{KLBibCounterB}%
+		\let \@currentlabel \theKLBibCounterB
+		\arabic{KLBibCounterB}) %
+	}
+\makeatother
+
+\newcommand{\KLcite}[1]{[\ref{#1}]}
+\newcommand{\KLciteB}[1]{ \ref{#1})}
+	
+%==================================================
+%Fair License
+
+%<Copyright Information>
+
+%Usage of the works is permitted provided that this
+%instrument is retained with the works, so that any entity
+%that uses the works is notified of this instrument.
+
+%DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
+
+%[2004, Fair License: rhid.com/fair]
+%==================================================
+% You may edit/modify this package at your own risk.
+% If there are important fixes or changes that you think should be 
+% reflected in the standard distribution, please notify:
+%	taku@hep.sci.osaka-u.ac.jp  .
+%==================================================

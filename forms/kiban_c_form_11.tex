@@ -1,0 +1,147 @@
+%form: kiban_c_form_11.tex ; user: kiban_c_11_materials.tex
+%========== S-1-8 基盤研究(C)(一般) =========
+%===== p. 11 設備備品費、消耗品費の明細 =============
+\section{設備備品費、消耗品費の明細}
+\KLBeginSinglePage{11}{}
+%frame: f11_materials_AB
+%f: 2011-10-20 Taku
+\setcounter{KLMaxYearCount}{\研究期間の最終元号年度 - \研究開始元号年度 + 1}%
+
+\begingroup
+  \setlength{\tabcolsep}{2pt}
+  \begin{\KLBudgetTableFontSize}
+	\setlength{\KLCella}{189.5pt}	% for equipment item
+	\setlength{\KLCellb}{54.5pt}	% for equipment cost
+	\setlength{\KLCelld}{146.5pt}	% for expendable items
+	\setlength{\KLCelle}{54pt}	% for expendable cost
+	
+	\setcounter{KLYearCount}{1}
+		
+	\KLNoMarginMinipage{\KLLeftEdge}{692}{570}{
+		\begingroup
+			\setlength{\tabcolsep}{0pt}%
+			\begin{tabular}[t]{p{34.5pt}>{\KLCC}p{191.2pt}>{\KLCR}p{57pt}>{\KLCC}p{149pt}>{\KLCR}p{56pt}}
+%				\KLJFY{\１年目J}
+				&
+				\KLBudgetMiniTabular{KLequipments}{\KLCella}{\KLCellb}{
+					%begin 設備備品費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					\設備備品費１年目
+					%end 設備備品費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+				}
+				&
+				\KLBudgetMiniTabular{KLexpendables}{\KLCelld}{\KLCelle}{
+					%begin 消耗品費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					\消耗品費１年目
+					%end 消耗品費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+				}
+				\\
+
+				\KLShouKeiLine{2-5}%----------------------------------
+
+				& 計 & \KLMiniSum{KLequipments} 
+				& 計  & \KLMiniSum{KLexpendables}\\
+				\hline%====================================================
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\２年目J}
+					&		
+					\KLBudgetMiniTabular{KLequipments}{\KLCella}{\KLCellb}{
+						%begin 設備備品費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\設備備品費２年目
+						%end 設備備品費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLexpendables}{\KLCelld}{\KLCelle}{
+						%begin 消耗品費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\消耗品費２年目
+						%end 消耗品費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-5}
+					& 計 & \KLMiniSum{KLequipments} 
+					& 計  & \KLMiniSum{KLexpendables}\\
+					\hline%====================================================
+				}
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\３年目J}
+					&		
+					\KLBudgetMiniTabular{KLequipments}{\KLCella}{\KLCellb}{
+						%begin 設備備品費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\設備備品費３年目
+						%end 設備備品費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLexpendables}{\KLCelld}{\KLCelle}{
+						%begin 消耗品費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\消耗品費３年目
+						%end 消耗品費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-5}
+					& 計 & \KLMiniSum{KLequipments} 
+					& 計  & \KLMiniSum{KLexpendables}\\
+					\hline%====================================================
+				}
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\４年目J}
+					&		
+					\KLBudgetMiniTabular{KLequipments}{\KLCella}{\KLCellb}{
+						%begin 設備備品費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\設備備品費４年目
+						%end 設備備品費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLexpendables}{\KLCelld}{\KLCelle}{
+						%begin 消耗品費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\消耗品費４年目
+						%end 消耗品費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-5}
+					& 計 & \KLMiniSum{KLequipments} 
+					& 計  & \KLMiniSum{KLexpendables}\\
+					\hline%====================================================
+				}
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\５年目J}
+					&		
+					\KLBudgetMiniTabular{KLequipments}{\KLCella}{\KLCellb}{
+						%begin 設備備品費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\設備備品費５年目
+						%end 設備備品費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLexpendables}{\KLCelld}{\KLCelle}{
+						%begin 消耗品費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\消耗品費５年目
+						%end 消耗品費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-5}
+					& 計 & \KLMiniSum{KLequipments} 
+					& 計  & \KLMiniSum{KLexpendables}\\
+					\hline%====================================================
+				}
+				
+			\end{tabular}
+		\endgroup
+	}
+  \end{\KLBudgetTableFontSize}
+\endgroup
+
+%---------------------------------
+	\KLBottomInfo{61}{46}{}{}{}{}
+\KLEndSinglePage
+%U:%====== end of page =====================================
+

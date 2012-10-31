@@ -1,0 +1,24 @@
+% Print the Grand Total of the budget to the console. (as requested by the Kakenhi-Macro group).
+\KLPrintGrandTotal
+
+%==== Summary Table in DRAFT mode =====
+\ifthenelse{\boolean{BudgetSummary}}{
+	\newpage
+	
+	% restore parameters
+	\setlength{\topmargin}{-2cm}
+	\setlength{\oddsidemargin}{-0.5cm}
+	\setlength{\evensidemargin}{-0.5cm}
+	\setlength{\textwidth}{16cm}
+	\setlength{\linewidth}{16cm}
+	\setlength{\textheight}{25cm}
+
+	\newpage	
+	\input{forms/summary_table}
+	
+	\newpage
+	\input{group_table}
+
+}{
+}
+

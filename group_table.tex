@@ -1,0 +1,108 @@
+\phantom{x}	\vspace{1cm}
+%======================================
+% group_table.tex (研究組織表)
+%	2006-09-12 TakuYamanaka (Osaka Univ.)
+%======================================
+{\Large このファイルは、group\_table.tex です。}\\
+研究組織表\\
+\begin{tabular}{|l|l|l|r|p{1.5cm}|}
+	\hline
+	\KLGname{(研究者番号)}{(フリガナ)}{(漢字等)}{(年齢)}
+	\KLGposition{(所属研究機関)}{(部局)}{職}
+	\KLGfield{現在の専門}{学位}{役割分担}
+	\begin{tabular}{l}
+		初年度\\研究経費\\(千円)\\ 
+		= \NumC{KLAnnualSum1}
+	\end{tabular}
+	& 
+	エフォート(\%)\\
+	\hline
+	\hline
+	
+%===== 研究代表者 ==========================
+	\multicolumn{5}{|l|}{研究代表者}\\
+	\hline
+	\KLGname{80398643}{チュウバチヨシヒデ}{\研究代表者氏名}{41}
+			% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{\研究機関名}{産業技術大学院大学}{准教授}
+			% 所属研究機関／部局／職
+	\KLGfield{情報工学}{博士（政策・メディア）}{代表}
+			% 現在の専門／学位／役割分担
+	\KLGbudget{2045}
+			% 初年度の研究経費（千円）[半角数字]　
+	\本応募effort	% DO NOT TOUCH
+	\\
+	\hline
+	\multicolumn{5}{|l|}{研究分担者}\\
+	\hline
+%===== 研究分担者 （例にならって、並べてください）　=================
+	\hline
+	\KLGname{40517017}{マツザワヨシアキ}{松澤芳昭}{35}% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{静岡大学}{情報学部}{助教}	% 所属研究機関／部局／職
+	\KLGfield{情報教育学}{博士（政策・メディア）}{研究の実施}	% 現在の専門／学位／役割分担
+	\KLGbudget{300}	% 初年度の研究経費（千円）[半角数字]
+	\KLGeffort{10}	% エフォート（％）
+
+%------------( カラのひながた。必要に応じてコピーしてください）------------
+%---------------
+	\hline
+	\KLGname{}{}{}{}	% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{}{}{}	% 所属研究機関／部局／職
+	\KLGfield{}{}{}		% 現在の専門／学位／役割分担
+	\KLGbudget{0}		% 初年度の研究経費（千円）[半角数字]　
+	\KLGeffort{}		% エフォート（％）
+
+%---------------
+	\hline
+	\KLGname{}{}{}{}	% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{}{}{}	% 所属研究機関／部局／職
+	\KLGfield{}{}{}		% 現在の専門／学位／役割分担
+	\KLGbudget{0}		% 初年度の研究経費（千円）[半角数字]　
+	\KLGeffort{}		% エフォート（％）
+
+%---------------
+	\hline
+	\KLGname{}{}{}{}	% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{}{}{}	% 所属研究機関／部局／職
+	\KLGfield{}{}{}		% 現在の専門／学位／役割分担
+	\KLGbudget{0}		% 初年度の研究経費（千円）[半角数字]　
+	\KLGeffort{}		% エフォート（％）
+
+%---------------
+	\hline
+	\KLGname{}{}{}{}	% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{}{}{}	% 所属研究機関／部局／職
+	\KLGfield{}{}{}		% 現在の専門／学位／役割分担
+	\KLGbudget{0}		% 初年度の研究経費（千円）[半角数字]　
+	\KLGeffort{}		% エフォート（％）
+
+%---------------
+	\hline
+	\KLGname{}{}{}{}	% 研究者番号／フリガナ／漢字等／年齢
+	\KLGposition{}{}{}	% 所属研究機関／部局／職
+	\KLGfield{}{}{}		% 現在の専門／学位／役割分担
+	\KLGbudget{0}		% 初年度の研究経費（千円）[半角数字]　
+	\KLGeffort{}		% エフォート（％）
+
+	
+%============================================
+	\hline
+	\hline
+	\multicolumn{2}{|c|}{合計　\arabic{KLNumPeople} 名} &
+	研究経費合計 &
+	\NumC{KLDistBudgetSum} & \\
+	\hline
+	\multicolumn{3}{|r|}{初年度に要求している予算額} &
+	\NumC{KLAnnualSum1} & \\
+	\hline
+\end{tabular}
+
+\ifthenelse{\value{KLAnnualSum1} = \value{KLDistBudgetSum}}{%
+	OK : 研究代表者と分担者に配分した研究経費の合計は
+	初年度の研究経費と一致しました。
+}{
+	{\LARGE ERROR: 研究代表者と分担者に配分した研究経費の合計が、\\
+	初年度の研究経費\NumC{KLAnnualSum1} 千円と一致しません。}
+}
+
+%\end{document}  

@@ -1,0 +1,219 @@
+%form: kiban_c_form_12.tex ; user: kiban_c_12_travels.tex
+%========== S-1-8 基盤研究(C)(一般) =========
+%===== p. 12 旅費等の明細 =============
+\section{旅費等の明細}
+\KLBeginSinglePage{12}{}
+%frame: f12_travel_misc_C
+%f: 2007-09-01 Taku
+%f: 2011-10-20 Taku - switched to kakenhi5.sty.
+\begingroup
+  \setlength{\tabcolsep}{2pt}
+  \begin{\KLBudgetTableFontSize}
+	\setlength{\KLCella}{77pt}	% for item
+	\setlength{\KLCellb}{32pt}	% for cost
+	\setlength{\KLCellc}{33pt}	% for cost others
+	\setlength{\KLCelld}{32pt}	% for sum
+	\setlength{\KLCelle}{77pt}	% for gratitude and other items
+	
+	\setcounter{KLYearCount}{1}
+	
+	\KLNoMarginMinipage{\KLLeftEdge}{707}{567}{
+		\begingroup
+			\setlength{\tabcolsep}{0pt}%
+			\begin{tabular}[t]{p{34pt}>{\KLCC}p{78pt}>{\KLCR}p{34pt}>{\KLCC}p{78pt}>{\KLCR}p{35pt}>{\KLCC}p{77pt}>{\KLCR}p{36pt}>{\KLCC}p{78pt}>{\KLCR}p{36pt}}
+				&
+				\KLBudgetMiniTabular{KLdomestic}{\KLCella}{\KLCellb}{
+					%begin 国内旅費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					\国内旅費１年目
+					%end 国内旅費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+				}
+				&
+				\KLBudgetMiniTabular{KLforeign}{\KLCella}{\KLCellb}{
+					%begin 外国旅費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					\外国旅費１年目
+					%end 外国旅費１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+				}
+				&
+				\KLBudgetMiniTabular{KLgratitude}{\KLCelle}{\KLCellb}{
+					%begin 謝金等１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					\謝金等１年目
+					%end 謝金等１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+				}
+				&
+				\KLBudgetMiniTabular{KLmisc}{\KLCelle}{\KLCellc}{
+					%begin その他１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					\その他１年目
+					%end その他１年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+				}
+				\\
+
+				\KLShouKeiLine{2-9}%----------------------------------
+
+				& 計 & \KLMiniSum{KLdomestic} 
+				& 計  & \KLMiniSum{KLforeign}
+				& 計  & \KLMiniSum{KLgratitude}
+				& 計  & \KLMiniSum{KLmisc}
+				\\
+				\hline%====================================================
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\２年目J}
+					&		
+					\KLBudgetMiniTabular{KLdomestic}{\KLCella}{\KLCellb}{
+						%begin 国内旅費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\国内旅費２年目
+						%end 国内旅費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLforeign}{\KLCella}{\KLCellb}{
+						%begin 外国旅費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\外国旅費２年目
+						%end 外国旅費２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLgratitude}{\KLCelle}{\KLCellb}{
+						%begin 謝金等２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\謝金等２年目
+						%end 謝金等２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLmisc}{\KLCelle}{\KLCellc}{
+						%begin その他２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\その他２年目
+						%end その他２年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-9}
+					& 計 & \KLMiniSum{KLdomestic} 
+					& 計  & \KLMiniSum{KLforeign}
+					& 計  & \KLMiniSum{KLgratitude}
+					& 計  & \KLMiniSum{KLmisc}
+					\\
+					\hline%====================================================
+				}
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\３年目J}
+					&		
+					\KLBudgetMiniTabular{KLdomestic}{\KLCella}{\KLCellb}{
+						%begin 国内旅費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\国内旅費３年目
+						%end 国内旅費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLforeign}{\KLCella}{\KLCellb}{
+						%begin 外国旅費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\外国旅費３年目
+						%end 外国旅費３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLgratitude}{\KLCelle}{\KLCellb}{
+						%begin 謝金等３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\謝金等３年目
+						%end 謝金等３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLmisc}{\KLCelle}{\KLCellc}{
+						%begin その他３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\その他３年目
+						%end その他３年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-9}
+					& 計 & \KLMiniSum{KLdomestic} 
+					& 計  & \KLMiniSum{KLforeign}
+					& 計  & \KLMiniSum{KLgratitude}
+					& 計  & \KLMiniSum{KLmisc}
+					\\
+					\hline%====================================================
+				}
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\４年目J}
+					&		
+					\KLBudgetMiniTabular{KLdomestic}{\KLCella}{\KLCellb}{
+						%begin 国内旅費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\国内旅費４年目
+						%end 国内旅費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLforeign}{\KLCella}{\KLCellb}{
+						%begin 外国旅費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\外国旅費４年目
+						%end 外国旅費４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLgratitude}{\KLCelle}{\KLCellb}{
+						%begin 謝金等４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\謝金等４年目
+						%end 謝金等４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLmisc}{\KLCelle}{\KLCellc}{
+						%begin その他４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\その他４年目
+						%end その他４年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-9}
+					& 計 & \KLMiniSum{KLdomestic} 
+					& 計  & \KLMiniSum{KLforeign}
+					& 計  & \KLMiniSum{KLgratitude}
+					& 計  & \KLMiniSum{KLmisc}
+					\\
+					\hline%====================================================
+				}
+
+				\stepcounter{KLYearCount}
+				\ifthenelse{\value{KLYearCount} > \value{KLMaxYearCount}}{%
+				}{%
+					\KLJFY{\５年目J}
+					&		
+					\KLBudgetMiniTabular{KLdomestic}{\KLCella}{\KLCellb}{
+						%begin 国内旅費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\国内旅費５年目
+						%end 国内旅費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLforeign}{\KLCella}{\KLCellb}{
+						%begin 外国旅費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\外国旅費５年目
+						%end 外国旅費５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLgratitude}{\KLCelle}{\KLCellb}{
+						%begin 謝金等５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\謝金等５年目
+						%end 謝金等５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					&
+					\KLBudgetMiniTabular{KLmisc}{\KLCelle}{\KLCellc}{
+						%begin その他５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+						\その他５年目
+						%end その他５年目　＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+					}
+					\\
+					\KLShouKeiLine{2-9}
+					& 計 & \KLMiniSum{KLdomestic} 
+					& 計  & \KLMiniSum{KLforeign}
+					& 計  & \KLMiniSum{KLgratitude}
+					& 計  & \KLMiniSum{KLmisc}
+					\\
+					\hline%====================================================
+				}
+				
+			\end{tabular}
+		\endgroup
+	}
+  \end{\KLBudgetTableFontSize}
+\endgroup
+
+\KLEndSinglePage
+%U:%====== end of page =====================================
+

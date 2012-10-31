@@ -1,0 +1,44 @@
+%==========================================================
+% form03_header.tex
+%	2009-03-04: Taku Yamanaka (Osaka Univ.)
+%==========================================================
+\usepackage{calc}
+\usepackage{watermark}
+\usepackage{longtable}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage{udline}
+\usepackage{array}
+
+\geometry{noheadfoot,scale=1}  %scale=1 resets margins to 0
+\setlength{\unitlength}{1pt}
+
+% define variables for positions ==========================
+% picture environment location, in  units of points
+\newcommand{\KLOddPictureX}{}
+\newcommand{\KLEvenPictureX}{}
+\newcommand{\KLPictureY}{}
+\newcommand{\KLOddPictureInWaterMarkX}{}
+\newcommand{\KLEvenPictureInWaterMarkX}{}
+\newcommand{\KLPictureInWaterMarkY}{}
+
+\newlength{\KLoddsidemargin}
+\newlength{\KLevensidemargin}
+\newlength{\KLtopmargin}
+
+\newcounter{KLCOddPictureInWaterMarkX}
+\newcounter{KLCEvenPictureInWaterMarkX}
+\newcounter{KLCPictureInWaterMarkY}
+\newcounter{KLCOddPictureX}
+\newcounter{KLCEvenPictureX}
+\newcounter{KLCPictureY}
+
+%------------------------------------------------------------
+
+\newcommand{\KLLeftEdge}{}
+\newcommand{\KLRightEdge}{}
+
+% standard margins for text in frames
+\setcounter{KLParboxSideMargin}{7}
+\setcounter{KLParboxTopMargin}{12}
+\setcounter{KLParboxBottomMargin}{5}
+

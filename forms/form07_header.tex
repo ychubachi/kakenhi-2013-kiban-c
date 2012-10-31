@@ -1,0 +1,30 @@
+%==========================================================
+% form07_header.tex
+%	2009-03-04: Taku Yamanaka (Osaka Univ.)
+%==========================================================
+% Remember Standard Positions that were set in form05_xxxx_header.tex
+\let \KLStandardOddMultiPageLeftEdge = \KLOddMultiPageLeftEdge
+\let \KLStandardOddMultiPageRightEdge = \KLOddMultiPageRightEdge
+\let \KLStandardEvenMultiPageLeftEdge = \KLEvenMultiPageLeftEdge
+\let \KLStandardEvenMultiPageRightEdge = \KLEvenMultiPageRightEdge
+
+\let \KLStandardMultiPageTopEdge = \KLMultiPageTopEdge
+\let \KLStandardMultiPageBottomEdge = \KLMultiPageBottomEdge
+
+\let \KLStandardOddLeftEdge = \KLOddLeftEdge
+\let \KLStandardOddRightEdge = \KLOddRightEdge
+\let \KLStandardEvenLeftEdge = \KLEvenLeftEdge
+\let \KLStandardEvenRightEdge = \KLEvenRightEdge
+
+
+% ===== File format for forms ===========================
+\ifthenelse{\boolean{usePDFform}}{
+	\newcommand{\KLFormFormat}{pdf}	\usepackage[dvipdfm]{graphicx}
+}{	\newcommand{\KLFormFormat}{eps}	\usepackage{graphicx}
+}
+
+%------ This should be set before \begin{document} ------
+\KLStandardLengths
+\KLStandardPositions
+%----------------------------------------------------------------------------
+
